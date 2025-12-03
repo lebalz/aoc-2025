@@ -1,0 +1,15 @@
+import { NavLink } from 'react-router'
+import './App.css'
+
+function App() {
+    return (
+        <>
+            <h1>Advent of Code 2025</h1>
+            <ul>
+                <li><NavLink to="/days/01">Day 01</NavLink></li>
+            </ul>
+        </>
+    )
+}
+
+export default App
