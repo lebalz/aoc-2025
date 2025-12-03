@@ -21,16 +21,13 @@ const data = input.trim().split('\n').map(line => {
     return dir * parseInt(line.slice(1), 10)
 });
 const result = data.reduce((acc, val) => {
-    const appliedDial = acc.num + val;
-    const newVal = (appliedDial + 100) % 100;
-    if (newVal === 0) {
+    const dir = val > 0 ? 1 : -1;
+    const zeros = [...Array(Math.abs(val)).keys()].map((_, i) => (acc.num + dir * (i + 1) + 100) % 100);
+    acc.passByZero += zeros.filter(v => v === 0).length;
+    acc.num = (acc.num + val + 100) % 100;
+    if (acc.num === 0) {
         acc.zeros += 1;
     }
-    if (acc.num > 0 && (appliedDial > 100 || appliedDial < 0)) {
-        const divMod = appliedDial > 100 ? Math.floor(appliedDial / 100) : Math.floor(-appliedDial / 100) + 1;
-        acc.passByZero += divMod;
-    }
-    acc.num = newVal;
     return acc;
 }, { num: 50, zeros: 0, passByZero: 0 });
 
@@ -62,8 +59,7 @@ const Day01 = () => {
             <input type="range" min={0} max={MAX_SPEED} value={speed} onChange={(e) => setSpeed(parseInt(e.target.value, 10))} />
             <div>Speed: {MAX_SPEED - speed}ms</div>
             <div>Count of Zeros: {countZero} [{result.zeros}]</div>
-            <div>Stage 2: additional zeros: {result.passByZero}</div>
-            <div>Total: {countZero + result.passByZero} [{result.passByZero + result.zeros}]</div>
+            <div>Stage 2: Total Zero Ticks: {result.passByZero}</div>
             <button
                 onClick={() => {
                     setNum(50);
