@@ -1,0 +1,18 @@
+.grid {
+    display: grid;
+    grid-auto-flow: row;
+    min-width: 80vw;
+    max-width: 90vw;
+
+    .cell {
+        line-height: 0;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        transition-property: background-color;
+        transition-timing-function: linear;
+
+        &.active {
+            background-color: yellow;
+        }
+    }
+}
