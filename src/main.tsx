@@ -10,7 +10,7 @@ import Day04 from './components/Day04/index.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename='aoc-2025'>
       <Routes>
         <Route index element={<App />} />
         <Route path="days">
