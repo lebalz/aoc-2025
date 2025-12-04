@@ -8,42 +8,65 @@ const data = input.trim().split(',').flatMap(minMax => {
     return [...Array(max - min + 1).keys()].map(i => min + i);
 });
 
-const invalid: Set<number> = new Set();
+const invalidP1: Set<number> = new Set();
 data.forEach(n => {
     const str = n.toString();
     if (str.length % 2 !== 0) {
         return;
     }
     if (str.startsWith('0')) {
-        return invalid.add(n);
+        return invalidP1.add(n);
     }
     const p1 = str.slice(0, str.length / 2);
     const p2 = str.slice(str.length / 2);
     if (p1 === p2) {
-        return invalid.add(n);
+        return invalidP1.add(n);
     }
 });
-const result = [...invalid].reduce((acc, val) => acc + val, 0);
+const invalidP2: Set<number> = new Set();
 
-
-// const result = data.reduce((acc, val) => {
-//     const dir = val > 0 ? 1 : -1;
-//     const zeros = [...Array(Math.abs(val)).keys()].map((_, i) => (acc.num + dir * (i + 1) + 100) % 100);
-//     acc.passByZero += zeros.filter(v => v === 0).length;
-//     acc.num = (acc.num + val + 100) % 100;
-//     if (acc.num === 0) {
-//         acc.zeros += 1;
-//     }
-//     return acc;
-// }, { num: 50, zeros: 0, passByZero: 0 });
+data.forEach(n => {
+    const str = n.toString();
+    if (str.startsWith('0')) {
+        return invalidP2.add(n);
+    }
+    const len = str.length;
+    for (let splits = 2; splits <= len; splits++) {
+        if (len % splits !== 0) {
+            continue;
+        }
+        const chunkSize = len / splits;
+        const checks = [...Array(splits - 1).keys()].map(i => {
+            return (i + 1) * chunkSize;
+        });
+        const invalid = checks.every((end) => {
+            const p1 = str.slice(0, chunkSize);
+            const p2 = str.slice(end, end + chunkSize);
+            return p1 === p2;
+        });
+        if (invalid) {
+            return invalidP2.add(n);
+        }
+    }
+});
+const resultP1 = [...invalidP1].reduce((acc, val) => acc + val, 0);
+const resultP2 = [...invalidP2].reduce((acc, val) => acc + val, 0);
 
 const Day02 = () => {
 
     return (
         <main>
             <h1>Day 02</h1>
-            <div>Result: {result}</div>
-            <pre><code>{JSON.stringify([...invalid], null, 2)}</code></pre>
+            <div>Result: {resultP1}</div>
+            <div>Result P2: {resultP2}</div>
+            <details>
+                <summary>Part 1</summary>
+                <pre><code>{JSON.stringify([...invalidP1], null, 2)}</code></pre>
+            </details>
+            <details>
+                <summary>Part 2</summary>
+                <pre><code>{JSON.stringify([...invalidP2], null, 2)}</code></pre>
+            </details>
         </main>
     )
 }

@@ -55,11 +55,14 @@ const Day01 = () => {
         <main>
             <h1>Day 01</h1>
             <Dial value={num} speed={MAX_SPEED - speed} />
-            <div style={{ marginTop: '10em' }}>Position: {idx}</div>
+            <div style={{ marginTop: '10em' }}>Position: {idx}/{data.length}</div>
             <input type="range" min={0} max={MAX_SPEED} value={speed} onChange={(e) => setSpeed(parseInt(e.target.value, 10))} />
             <div>Speed: {MAX_SPEED - speed}ms</div>
             <div>Count of Zeros: {countZero} [{result.zeros}]</div>
-            <div>Stage 2: Total Zero Ticks: {result.passByZero}</div>
+            <details>
+                <summary>Stage 2</summary>
+                <div>Stage 2: Total Zero Ticks: {result.passByZero}</div>
+            </details>
             <button
                 onClick={() => {
                     setNum(50);
