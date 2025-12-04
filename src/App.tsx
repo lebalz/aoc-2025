@@ -7,6 +7,7 @@ function App() {
             <h1>Advent of Code 2025</h1>
             <ul>
                 <li><NavLink to="/days/01">Day 01</NavLink></li>
+                <li><NavLink to="/days/02">Day 02</NavLink></li>
             </ul>
         </>
     )
