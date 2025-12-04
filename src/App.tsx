@@ -9,6 +9,7 @@ function App() {
                 <li><NavLink to="/days/01">Day 01</NavLink></li>
                 <li><NavLink to="/days/02">Day 02</NavLink></li>
                 <li><NavLink to="/days/03">Day 03</NavLink></li>
+                <li><NavLink to="/days/04">Day 04</NavLink></li>
             </ul>
         </>
     )
