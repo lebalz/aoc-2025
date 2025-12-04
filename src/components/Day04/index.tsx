@@ -9,6 +9,9 @@ const data = input.trim().split('\n').map(row => {
     return rolls;
 });
 
+const DIM_X = data[0]!.length;
+const DIM_Y = data.length;
+
 const isAccessable = (grid: number[][], x: number, y: number) => {
     const cell = grid[y]?.[x];
     if (cell === undefined || cell < 1) {
@@ -46,10 +49,13 @@ const removeAccessable = (grid: number[][]) => {
     return count;
 };
 
-const processAccessable = (grid: number[][]) => {
-    const newGrid = grid.map((row) => row.map((c) => c));
+const processAccessable = (flatGrid: number[]) => {
+    const flat = flatGrid.map((c) => c);
+    const newGrid: number[][] = [...Array(DIM_Y).keys()].map((y) => {
+        return flat.slice(y * DIM_X, (y + 1) * DIM_X);
+    });
     removeAccessable(newGrid);
-    return newGrid;
+    return newGrid.flat();
 };
 
 const accessableP2: number[] = [];
@@ -62,15 +68,30 @@ while (true) {
     accessableP2.push(removed);
 }
 
-const MAX_SPEED = 1000;
+const MAX_SPEED = 2000;
 const initialPresent = data.flatMap(r => r).reduce((acc, val) => acc + val, 0 as number);
+
+const Cell = React.memo(
+    ({ active, style, cellKey }: { active: boolean; style: React.CSSProperties; cellKey: string }) => (
+        <div
+            key={cellKey}
+            className={clsx(styles.cell, active && styles.active)}
+            style={style}
+        ></div>
+    ),
+    (prev, next) =>
+        prev.active === next.active &&
+        prev.style.transitionDuration === next.style.transitionDuration &&
+        prev.cellKey === next.cellKey
+);
+
 
 const Day04 = () => {
     const [speed, setSpeed] = React.useState(MAX_SPEED / 2);
     const [iteration, setIteration] = React.useState(0);
     const [presentRolls, setPresentRolls] = React.useState<number[]>([initialPresent]);
     const [isRunning, setIsRunning] = React.useState(true);
-    const [grid, setGrid] = React.useState<number[][]>(data.map(r => r.map(c => c)));
+    const [grid, setGrid] = React.useState<number[]>(data.flatMap(r => r.map(c => c)));
     const iterationSpeed = MAX_SPEED - speed;
     React.useEffect(() => {
         if (!isRunning) {
@@ -104,13 +125,14 @@ const Day04 = () => {
         <main>
             <h1>Day 04</h1>
             <div>Iteration: {iteration}</div>
-            <div className={clsx(styles.grid)} style={{ gridTemplateColumns: `repeat(${grid[0].length}, 1fr)` }}>
-                {grid.map((row, y) => (
-                    <React.Fragment key={y}>
-                        {row.map((cell, x) => (
-                            <div key={`cell-${y}-${x}`} className={clsx(styles.cell, cell > 0 && styles.active)} style={{ transitionDuration: iteration > 0 ? `${3 * iterationSpeed}ms` : undefined }}></div>
-                        ))}
-                    </React.Fragment>
+            <div className={clsx(styles.grid)} style={{ gridTemplateColumns: `repeat(${DIM_X}, 1fr)` }}>
+                {grid.map((cell, idx) => (
+                    <Cell
+                        key={`cell-${idx}`}
+                        cellKey={`cell-${idx}`}
+                        active={cell > 0}
+                        style={{ transitionDuration: iteration > 0 ? `${3 * iterationSpeed}ms` : undefined }}
+                    />
                 ))}
             </div>
             <div>
@@ -119,7 +141,7 @@ const Day04 = () => {
 
             <button
                 onClick={() => {
-                    setGrid(data.map(r => r.map(c => c)));
+                    setGrid(data.flatMap(r => r.map(c => c)));
                     setPresentRolls([initialPresent]);
                     setIteration(0);
                     setIsRunning(true);
