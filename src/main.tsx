@@ -5,6 +5,7 @@ import './index.css'
 import App from './App.tsx'
 import Day01 from './components/Day01/index.tsx';
 import Day02 from './components/Day02/index.tsx';
+import Day03 from './components/Day03/index.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="days">
           <Route path="01" element={<Day01 />} />
           <Route path="02" element={<Day02 />} />
+          <Route path="03" element={<Day03 />} />
         </Route>
       </Routes>
     </BrowserRouter>

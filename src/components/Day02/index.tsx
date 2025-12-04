@@ -1,4 +1,3 @@
-import React from 'react';
 import input from './assets/input.txt?raw';
 // import input from './assets/input.example.txt?raw';
 
