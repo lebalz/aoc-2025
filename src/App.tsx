@@ -11,6 +11,7 @@ function App() {
                 <li><NavLink to="/days/03">Day 03</NavLink></li>
                 <li><NavLink to="/days/04">Day 04</NavLink></li>
                 <li><NavLink to="/days/05">Day 05</NavLink></li>
+                <li><NavLink to="/days/06">Day 06</NavLink></li>
             </ul>
         </>
     )

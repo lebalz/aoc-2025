@@ -8,6 +8,7 @@ import Day02 from './components/Day02/index.tsx';
 import Day03 from './components/Day03/index.tsx';
 import Day04 from './components/Day04/index.tsx';
 import Day05 from './components/Day05/index.tsx';
+import Day06 from './components/Day06/index.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="03" element={<Day03 />} />
           <Route path="04" element={<Day04 />} />
           <Route path="05" element={<Day05 />} />
+          <Route path="06" element={<Day06 />} />
         </Route>
       </Routes>
     </BrowserRouter>
